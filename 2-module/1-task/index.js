@@ -1,3 +1,10 @@
 function sumSalary(salaries) {
-  // ваш код...
+  return Object.values(salaries).reduce(
+		(acc, curr) => {
+			if(!isNaN(curr) && isFinite(curr) && typeof curr === "number") {
+				return acc + curr;
+			}
+			return acc; 
+		}
+	, 0);
 }
