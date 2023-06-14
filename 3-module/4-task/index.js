@@ -1,12 +1,12 @@
-function showSalary(users, age) {
-  let result = '';
-	for(let i = 0; i < users.length; i++) {
-		if(users[i].age <= age) {
-			result = result + users[i].name + ", " + users[i].balance;
-			if(i < (users.length - 1)) {
-				result += "\n";
-			}
-		}	
+function showSalary(users, maxAge) {
+	let result = [];
+	for(const user of users) {
+		if(user.age <= maxAge) {
+			result.push(user);	
+		}
 	}
-	return result.slice(0, result.length);
+	result = result.map((user) => {
+		return user.name + ', ' + user.balance;
+	});
+	return result.join('\n');
 }
