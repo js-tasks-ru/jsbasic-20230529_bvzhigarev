@@ -1,9 +1,9 @@
 function initCarousel() {
-  let carouselInner = document.querySelector( ".carousel__inner" );
+  const carouselInner = document.querySelector( ".carousel__inner" );
   const slides = document.querySelectorAll( ".carousel__slide" );
   const offsetWidth = carouselInner.offsetWidth;
-  let arrowLeft = document.querySelector( ".carousel__arrow_left" );
-  let arrowRight = document.querySelector( ".carousel__arrow_right" );
+  const arrowLeft = document.querySelector( ".carousel__arrow_left" );
+  const arrowRight = document.querySelector( ".carousel__arrow_right" );
   let currentSlide = 0;
   arrowLeft.style.display = "none";
   document.querySelector( ".carousel" ).addEventListener( "click", event => {
@@ -22,6 +22,6 @@ function initCarousel() {
       if( currentSlide == 0 ) {
         arrowLeft.style.display = "none";
       };
-    }
+    };
   });
 }
