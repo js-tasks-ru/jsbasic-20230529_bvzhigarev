@@ -1,7 +1,7 @@
 function initCarousel() {
   let carouselInner = document.querySelector( ".carousel__inner" );
-  let slides = document.querySelectorAll( ".carousel__slide" );
-  let offsetWidth = carouselInner.offsetWidth;
+  const slides = document.querySelectorAll( ".carousel__slide" );
+  const offsetWidth = carouselInner.offsetWidth;
   let arrowLeft = document.querySelector( ".carousel__arrow_left" );
   let arrowRight = document.querySelector( ".carousel__arrow_right" );
   let currentSlide = 0;
