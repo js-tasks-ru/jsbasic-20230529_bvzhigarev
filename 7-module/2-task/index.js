@@ -4,15 +4,6 @@ export default class Modal {
   constructor() {
     this.title;
     this.body;
-    this.elem;
-  }
-  setTitle( title ) {
-    this.title = title;
-  }
-  setBody( body ) {
-    this.body = body;
-  }
-  open() {
     this.elem = createElement(
       `
       <div class="modal">
@@ -23,7 +14,6 @@ export default class Modal {
               <img src="/assets/images/icons/cross-icon.svg" alt="close-icon" />
             </button>
             <h3 class="modal__title">
-              ${this.title}
             </h3>
           </div>
           <div class="modal__body"></div>
@@ -31,8 +21,16 @@ export default class Modal {
       </div>  
       `
     );
-    document.querySelector( '.container' ).append( this.elem );
-    this.elem.querySelector( '.modal__body' ).append( this.body );
+  }
+  setTitle( title ) {
+    this.elem.querySelector( '.modal__title' ).textContent = title;
+  }
+  setBody( body ) {
+    this.elem.querySelector( '.modal__body' ).innerHTML = '';
+    this.elem.querySelector( '.modal__body' ).append( body );
+  }
+  open() {
+    document.querySelector( 'BODY' ).append( this.elem );
     document.querySelector( 'BODY' ).classList.add( 'is-modal-open' );
     this.elem.addEventListener( 'click', event => {
       if( event.target.closest( '.modal__close' ) ) {
@@ -40,7 +38,6 @@ export default class Modal {
       }
     } );
     document.addEventListener( 'keydown', event => {
-      console.log( event.code );
       if( event.code === 'Escape' ) {
         this.close();
       }

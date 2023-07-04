@@ -1,3 +1,5 @@
+//import createElement from "../../assets/lib/create-element";
+
 export default class StepSlider {
   constructor( { steps, value = 0 } ) {
     this.config = {
@@ -28,7 +30,10 @@ export default class StepSlider {
       `
     )
     this.elem.addEventListener( 'click', this.moveSlider );
-    this.elem.querySelector('.slider__thumb').ondragstart = () => false;
+    let thumb = this.elem.querySelector( '.slider__thumb' );
+    thumb.ondragstart = () => false;
+    thumb.addEventListener( 'pointerdown', this.onPointerDown );
+    this.thumb = thumb;
   }
   moveSlider = ( event ) => {
     let clickPosition = event.clientX - this.elem.getBoundingClientRect().x;
@@ -48,5 +53,36 @@ export default class StepSlider {
         bubbles: true 
       } )
     );
+  }
+  onPointerDown = () => {
+    document.addEventListener( 'pointermove', this.onPointerMove );
+    document.addEventListener( 'pointerup', this.onPointerUp );
+    document.querySelector( '.slider' ).classList.add( 'slider_dragging' );
+    
+  }
+  onPointerMove = ( event ) => {
+    let left = event.clientX - this.elem.getBoundingClientRect().left;
+    let leftRelative = left / this.elem.offsetWidth;
+    if (leftRelative < 0) {
+      leftRelative = 0;
+    }
+    if (leftRelative > 1) {
+      leftRelative = 1;
+    }
+    let leftPercents = leftRelative * 100;
+    let thumb = this.elem.querySelector('.slider__thumb');
+    let progress = this.elem.querySelector('.slider__progress');
+    thumb.style.left = `${leftPercents}%`;
+    progress.style.width = `${leftPercents}%`;
+    this.approximateValue = leftRelative * ( this.config.steps - 1 );
+  }
+  onPointerUp = () => {
+    document.querySelector( '.slider' ).classList.remove( 'slider_dragging' );
+    document.removeEventListener( 'pointermove', this.onPointerMove );
+    document.removeEventListener( 'pointerup', this.onPointerUp );
+    this.elem.dispatchEvent( new CustomEvent('slider-change', { 
+      detail: Math.round(this.approximateValue), 
+      bubbles: true 
+    } ) );
   }
 }
