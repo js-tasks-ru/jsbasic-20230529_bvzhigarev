@@ -1,5 +1,5 @@
 export default class UserTable {
-  constructor( rows ) {
+  constructor( rows) {
     this.rows = rows;
     this.render();
   }
