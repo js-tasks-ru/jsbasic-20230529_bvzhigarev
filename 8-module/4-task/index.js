@@ -13,23 +13,58 @@ export default class Cart {
   }
 
   addProduct(product) {
-    // СКОПИРУЙТЕ СЮДЯ СВОЙ КОД
+    if( arguments.length > 0 && product != null) {
+      let productIsAlreadyAdded = false;
+      for( let cartItem of this.cartItems ) {
+        if( cartItem.product.id == product.id ) {
+          productIsAlreadyAdded = true;
+        }
+      }
+      if( !productIsAlreadyAdded ) {
+        this.cartItems.push(
+          {'product': product, 'count': 1}
+        );
+        this.onProductUpdate(this.cartItems[this.cartItems.length - 1]);
+      } else {
+        for( let cartItem of this.cartItems) {
+          if( cartItem.product.id == product.id ) {
+            cartItem.count = cartItem.count + 1;
+          }
+          this.onProductUpdate(cartItem);  
+        };
+      }
+    }
   }
 
   updateProductCount(productId, amount) {
-    // СКОПИРУЙТЕ СЮДЯ СВОЙ КОД
+    for( let cartItem of this.cartItems ) {
+      if( cartItem.product.id == productId ) {
+        cartItem.count += amount;
+        if (cartItem.count < 1) { 
+          this.cartItems.splice(this.cartItems.indexOf(cartItem), 1); 
+        }
+      }
+    }
   }
 
   isEmpty() {
-    // СКОПИРУЙТЕ СЮДЯ СВОЙ КОД
+    return !this.cartItems.length;
   }
 
   getTotalCount() {
-    // СКОПИРУЙТЕ СЮДЯ СВОЙ КОД
+    let result = 0;
+    for( let cartItem of this.cartItems ) {
+      result += cartItem.count;
+    }
+    return result;
   }
 
   getTotalPrice() {
-    // СКОПИРУЙТЕ СЮДЯ СВОЙ КОД
+    let result = 0;
+    for( let cartItem of this.cartItems ) {
+      result += cartItem.product.price * cartItem.count;
+    }
+    return result;
   }
 
   renderProduct(product, count) {
