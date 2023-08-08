@@ -149,7 +149,9 @@ export default class Cart {
     }
   };
 
+
   onProductUpdate( {product, count} ) {
+
     this.cartIcon.update(this);
 
     if (!this.modal || !document.body.classList.contains('is-modal-open')) {
