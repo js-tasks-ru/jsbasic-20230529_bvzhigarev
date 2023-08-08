@@ -26,8 +26,8 @@ export default class Cart {
           this.onProductUpdate(cartItem);  
         };
       }
-      }
-    } 
+    }
+  } 
   updateProductCount(productId, amount) {
     for( let cartItem of this.cartItems ) {
       if( cartItem.product.id == productId ) {
@@ -44,9 +44,6 @@ export default class Cart {
   }
 
   getTotalCount() {
-    // return this.cartItems.reduce( 
-    //   ( totalCount, cartItem ) => totalCount += cartItem.count, 0 
-    // );
     let result = 0;
     for( let cartItem of this.cartItems ) {
       result += cartItem.count;
@@ -55,9 +52,6 @@ export default class Cart {
   }
 
   getTotalPrice() {
-    // return this.cartItems.reduce( 
-    //   ( totalPrice, cartItem ) => totalPrice += cartItem.product.price, 0 
-    // );
     let result = 0;
     for( let cartItem of this.cartItems ) {
       result += cartItem.product.price * cartItem.count;

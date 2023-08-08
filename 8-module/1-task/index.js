@@ -30,15 +30,22 @@ export default class CartIcon {
     window.addEventListener('resize', () => this.updatePosition());
   }
   updatePosition() {
-    if (document.documentElement.clientWidth <= 767) {
+    let initialPosition = this.elem.getBoundingClientRect().y + window.scrollY;
+
+    //console.log( 'actualLeftIndent', Math.round(this.elem.getBoundingClientRect().left) );
+    //console.log( 'expectedLeftIndent', Math.round(document.querySelector('.container').getBoundingClientRect().right) + 20 );
+
+    let isMobile = document.documentElement.clientWidth <= 767;
+
+    if ( isMobile ) {
       Object.assign(this.elem.style, {
         position: '',
         top: '',
         left: '',
         zIndex: ''
       });
-    }
-    if ( window.scrollY > this.elem.getBoundingClientRect().y + window.scrollY ) {
+    }  
+    if( window.scrollY > initialPosition && !isMobile ) {
       this.elem.style.position = 'fixed';
       let leftIndent = Math.min(
         document.querySelector('.container').getBoundingClientRect().right + 20,
@@ -51,7 +58,8 @@ export default class CartIcon {
         right: '10px',
         left: leftIndent
       });
-    } else {
+    }  
+    if( window.scrollY == initialPosition && !isMobile ) {
       this.elem.style.position = 'absolute';
       Object.assign(this.elem.style, {
         position: '',

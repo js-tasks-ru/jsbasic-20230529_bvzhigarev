@@ -2,11 +2,12 @@ import createElement from '../../assets/lib/create-element.js';
 import ProductCard from '../../6-module/2-task/index.js';
 
 export default class ProductGrid {
-  constructor(products) {
+  constructor( products ) {
     this.products = products;
     this.filters = {};
     this.render();
   }
+
   render() {
     this.elem = createElement(
       `<div class="products-grid">
@@ -15,33 +16,44 @@ export default class ProductGrid {
       </div>`
     );
     for( let product of this.products ) {
-      if( !this.isFiltered( product ) ) {
-        this.elem.querySelector( '.products-grid__inner' ).append( new ProductCard( product ).elem );
-      }
+      this.elem.querySelector( '.products-grid__inner' ).append( new ProductCard( product ).elem );
     }  
   }
+
   updateFilter( filters ) {
     for( let key of Object.keys( filters ) ) {
       this.filters[key] = filters[key];
     }
+
+//изначально было сделано через display:none, чтобы не перерисовывать весь грид 
+//но задание почему-то требует, чтобы количество нод в контейнере менялось
+//поэтому грохаем ноды
+// V V V V V V V  
+
     for( let product of this.elem.querySelectorAll( '.card' ) ) {
-      if( this.isFiltered( product ) ) {
-        product.style.display = 'none'; 
-      } else {
-        product.style.display = '';
+      if( this.isFiltered( product ) ) { 
+        product.remove();
       }
     }
-    this.elem.remove();
-    this.render();
   }
+
+//------------------------------------------------------------------------------
+
   isFiltered( product ) {
-    if( ( !this.filters.noNuts || product.nuts != true ) 
-      && ( !this.filters.vegeterianOnly || product.vegeterian )
-      && ( !this.filters.maxSpiciness || this.filters.maxSpiciness >= product.spiciness )
-      && ( !this.filters.category || this.filters.category == product.category )	
+    let name = product.querySelector( '.card__title' ).innerHTML;
+    let hasNuts = this.products.find( element => element.name == name ).nuts;
+    let vegeterian = this.products.find( element => element.name == name ).vegeterian;
+    let category = this.products.find( element => element.name == name ).category;
+    let spiciness = this.products.find( element => element.name == name ).spiciness;
+
+    if( ( !this.filters.noNuts || hasNuts != true ) 
+		  && ( !this.filters.vegeterianOnly || vegeterian )
+		  && ( !this.filters.maxSpiciness || this.filters.maxSpiciness >= spiciness )
+		  && ( !this.filters.category || this.filters.category == category )	
 		) {
-      return false;
-    }
-    return true;
+		  return false;
+	  } else { 
+		  return true 
+	  };
   }	
 }
