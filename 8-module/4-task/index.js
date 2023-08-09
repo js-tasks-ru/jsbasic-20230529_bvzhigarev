@@ -8,11 +8,10 @@ export default class Cart {
 
   constructor(cartIcon) {
     this.cartIcon = cartIcon;
-
     this.addEventListeners();
   }
 
-  addProduct(product) {
+  addProduct( product ) {
     let cartItem = this.cartItems.find(
       item => item.product.id == product.id
     );
@@ -41,18 +40,23 @@ export default class Cart {
   }
 
   isEmpty() {
-    return this.cartItems.length === 0;
+    return !this.cartItems.length;
   }
 
   getTotalCount() {
-    return this.cartItems.reduce((sum, item) => sum + item.count, 0);
+    let result = 0;
+    for( let cartItem of this.cartItems ) {
+      result += cartItem.count;
+    }
+    return result;
   }
 
   getTotalPrice() {
-    return this.cartItems.reduce(
-      (sum, item) => sum + item.product.price * item.count,
-      0
-    );
+    let result = 0;
+    for( let cartItem of this.cartItems ) {
+      result += cartItem.product.price * cartItem.count;
+    }
+    return result;
   }
 
   renderProduct(product, count) {
@@ -145,7 +149,9 @@ export default class Cart {
     }
   };
 
-  onProductUpdate({product, count}) {
+
+  onProductUpdate( {product, count} ) {
+
     this.cartIcon.update(this);
 
     if (!this.modal || !document.body.classList.contains('is-modal-open')) {
@@ -153,7 +159,6 @@ export default class Cart {
     }
 
     if (this.cartItems.length == 0) {
-      // No products, close the modal
       this.modal.close();
       return;
     }
